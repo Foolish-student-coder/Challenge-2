@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Form</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="icon" type="images/png" sizes="32x32" href="images/favicon-32x32.png">
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="container">
+        <div class="contact-box">
+            <div id="left"></div>
+            <div id="right">
+                <h2 id="MyHeader">Contact Us</h2>
+
+                <input type="text" class="field" placeholder="Your Name" required>
+
+                <input type="email" class="field" placeholder="Your Email" required>
+
+                <textarea class="field area" placeholder="Message" required></textarea>
+
+                <div id="attach-wrapper">
+                    <input type="file" id="fileUpload" class="attach-input" accept=".jpg,.png,.pdf,.doc,.docx">
+                </div>
+
+                <div id="survey">
+                    <h2>How are you feeling today?</h2>
+                    <form action="#" method="post">
+                        <select id="feeling" name="feeling" class="field" required>
+                            <option value="">-- Select --</option>
+                            <option value="happy">Happy</option>
+                            <option value="neutral">Neutral</option>
+                            <option value="sad">Sad</option>
+                            <option value="anxious">Anxious</option>
+                        </select>
+
+                        <div id="satisfaction-rating">
+                            <label for="satisfaction">Rate your satisfaction: <span id="rating-value">5</span>/10</label>
+                            <input type="range" id="satisfaction" name="satisfaction" min="1" max="10" value="5" oninput="updateRating(this.value)">
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn" type="button" onclick="validateForm()">Send</button>
+                            <button class="btn clear" type="button" onclick="clearForm()">Clear</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>    
+
+    <!-- Script Section -->
+    <script>
+        function validateForm() {
+            let fields = document.querySelectorAll(".field");
+            let name = document.querySelector('input[placeholder="Your Name"]').value.trim();
+            let email = document.querySelector('input[type="email"]').value.trim();
+            let message = document.querySelector('textarea').value.trim();
+            let feeling = document.getElementById("feeling").value;
+            let rating = document.getElementById("satisfaction").value;
+
+            // Check all fields filled
+            for (let field of fields) {
+                if (!field.value.trim()) {
+                    alert("⚠️ Please fill out all fields!");
+                    return;
+                }
+
+                // Check for missing input type
+                if (!field.type) {
+                    alert("⚠️ A form field is missing its type attribute.");
+                    return;
+                }
+            }
+
+            // Email validation
+            if (!email.includes("@") || !email.includes(".")) {
+                alert("⚠️ Please enter a valid email address.");
+                return;
+            }
+
+            alert(`✅ Message Received! Thank you, ${name}!\nFeeling: ${feeling}\nSatisfaction Rating: ${rating}/10`);
+
+            clearForm();
+        }
+
+        function clearForm() {
+            document.querySelectorAll(".field").forEach(field => field.value = "");
+            document.getElementById("feeling").value = "";
+            document.getElementById("satisfaction").value = 5;
+            document.getElementById("rating-value").textContent = 5;
+
+            const fileInput = document.getElementById("fileUpload");
+            fileInput.value = "";
+        }
+
+        function updateRating(value) {
+            document.getElementById("rating-value").textContent = value;
+        }
+    </script>
+</body>
+</html>
